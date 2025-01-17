@@ -1,0 +1,56 @@
+typeclasses exercises
+
+module Main where
+
+class IfValue a where
+    boolVal :: a -> Bool
+
+1. Define instances of IfValue for multiple data types
+instance IfValue Int where
+    boolVal 0 = False
+    boolVal _ = True
+
+2. Instance of IfValue for Bool
+instance IfValue Bool where
+    boolVal = id
+
+3. Instance of IfValue for Maybe
+instance IfValue (Maybe a) where
+    boolVal Nothing  = False
+    boolVal (Just _) = True
+
+4. Instance of IfValue for List
+instance IfValue [a] where
+    boolVal [] = False
+    boolVal _  = True
+
+5. Instance of IfValue for Either
+instance IfValue (Either a b) where
+    boolVal (Left _)  = False
+    boolVal (Right _) = True
+
+6. Define a map function for Maybe
+maybeMap :: (a -> b) -> Maybe a -> Maybe b
+maybeMap _ Nothing  = Nothing
+maybeMap f (Just x) = Just (f x)
+
+7. Define a map function for pairs (Tuple)
+pairMap :: (a -> c) -> (b -> d) -> (a, b) -> (c, d)
+pairMap f g (x, y) = (f x, g y)
+
+8. Examples of usage
+main :: IO ()
+main = do
+    print (boolVal (0 :: Int))    -- False
+    print (boolVal (5 :: Int))    -- True
+    print (boolVal True)          -- True
+    print (boolVal False)         -- False
+    print (boolVal (Just 42))     -- True
+    print (boolVal Nothing)       -- False
+    print (boolVal [1, 2, 3])     -- True
+    print (boolVal ([] :: [Int])) -- False
+    print (boolVal (Right "OK")) -- True
+    print (boolVal (Left "Err")) -- False
+    print (maybeMap (+1) (Just 3)) -- Just 4
+    print (maybeMap (+1) Nothing)  -- Nothing
+    print (pairMap (+1) (*2) (3, 4)) -- (4, 8)
